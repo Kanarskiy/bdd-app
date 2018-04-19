@@ -6,6 +6,10 @@
 
 require 'cucumber/rails'
 
+# Make sure this require is after you require cucumber/rails/world.
+require 'email_spec' # add this line if you use spork
+require 'email_spec/cucumber'
+
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
 # selectors in your step definitions to use the XPath syntax.
@@ -31,9 +35,9 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :transaction
 rescue NameError
-  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
+    raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
