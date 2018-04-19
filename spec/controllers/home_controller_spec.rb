@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 Rspec.describe HomeController do
-    let(:user) { instance_double(:User) }
+    let(:user) { instance_double(User) }
 
     before { log_in(user) }
 
