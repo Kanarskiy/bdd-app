@@ -1,7 +1,6 @@
 Given('I visit the homepage') do
     visit root_path
 end
-
 When('I fill in the sign up form') do
     click_link 'Sign up'
 
@@ -47,5 +46,4 @@ When('I click on the log out button') do
 end
 Then('I should be redirected to the log in page') do
     expect(page).to have_content('Log in')
-    # expect(page).to have_content('Signed out successfully.')
 end
