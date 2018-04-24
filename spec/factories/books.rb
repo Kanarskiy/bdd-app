@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :book do
-    user nil
-    name "MyString"
-    author "MyString"
-  end
+    factory :book do
+        user nil
+        name 'String'
+        author 'String'
+    end
 end

@@ -58,8 +58,8 @@ RSpec.configure do |config|
 
     # Devise test helpers
     config.include Warden::Test::Helpers
-    config.include Devise::TestHelpers, :type => :controller
-    config.include ControllerHelper, :type => :controller
+    config.include Devise::Test::ControllerHelpers
+    config.include ControllerHelper
 
     # DB cleaning strategy for RSpec tests
     config.before(:suite) do
