@@ -31,31 +31,92 @@ Rspec.describe BooksController do
             post :create, :params => {:book => params}
             expect(book).to have_received(:save)
         end
-    end
 
-    context 'when the book is succesfully saved' do
-        before do
-            allow(book).to receive(:save).and_return(true)
-            post :create, :params => {:book => params}
-        end
-
-        it 'redirects to the book show page' do
-            expect(response).to redirect_to(book_path(book))
-        end
-
-        it 'redirects to the book show page' do
-            expect(flash[:notice]).to eq('Book was successfully created.')
-        end
-    end
-
-    context 'when the book can’t be saved' do
-        before do
-            allow(book).to receive(:save).and_return(false)
-            post :create, :params => {:book => params}
-
-            it 'redirects back to the new page' do
-                expect(response).to render_template(:new)
+        context 'when the book is succesfully saved' do
+            before do
+                allow(book).to receive(:save).and_return(true)
+                post :create, :params => {:book => params}
             end
+
+            it 'redirects to the book show page' do
+                expect(response).to redirect_to(book_path(book))
+            end
+
+            it 'redirects to the book show page' do
+                expect(flash[:notice]).to eq('Book was successfully created.')
+            end
+        end
+
+        context 'when the book can’t be saved' do
+            before do
+                allow(book).to receive(:save).and_return(false)
+                post :create, :params => {:book => params}
+
+                it 'redirects back to the new page' do
+                    expect(response).to render_template(:new)
+                end
+            end
+        end
+    end
+
+    describe 'PATCH #update' do
+        let(:book) { FactoryBot.build_stubbed(:book) }
+
+        before do
+            allow(Book).to receive(:find).and_return(book)
+            allow(book).to receive(:update).and_return(true)
+        end
+
+        it 'updates the book' do
+            patch :update, :params => {
+                                 :id => book.id,
+                                 :book => {:name => 'New Name'}
+                         }
+        end
+
+        context 'when the update succeeds' do
+            it 'redirects to the book page' do
+                patch :update, :params => {
+                                     :id => book.id,
+                                     :book => {:name => 'New Name'}
+                             }
+
+                expect(response).to redirect_to(book_path(book))
+            end
+        end
+
+        context 'when the update failed' do
+            before do
+                allow(book).to receive(:update).and_return(false)
+            end
+
+            it 'renders the edit page again' do
+                patch :update, :params => {
+                                     :id => book.id,
+                                     :book => {:name => 'New Name'}
+                             }
+
+                expect(response).to render_template(:edit)
+            end
+        end
+    end
+
+    describe 'DELETE #destroy' do
+        let(:book) { FactoryBot.build_stubbed(:book) }
+
+        before do
+            allow(Book).to receive(:find).and_return(book)
+            allow(book).to receive(:destroy)
+
+            delete :destroy, :params => {:id => book.id}
+        end
+
+        it 'deletes the book' do
+            expect(book).to have_received(:destroy)
+        end
+
+        it 'redirects to the index page' do
+            expect(response).to redirect_to(books_path)
         end
     end
 end
